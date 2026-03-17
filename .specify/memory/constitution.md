@@ -1,14 +1,14 @@
 <!--
 SYNC IMPACT REPORT
 ------------------
-Version change: N/A -> 1.0.0 (initial ratification)
-Modified principles: N/A (new constitution)
-Added sections: All 20 Articles
+Version change: 1.0.0 -> 1.1.0
+Modified principles: Purpose, Article XIV
+Added sections: IaC mandate in Purpose and Article XIV
 Removed sections: N/A
 Templates requiring updates:
-  - plan-template.md: Constitution Check section requires alignment with new principles
+  - plan-template.md: Constitution Check section requires alignment with new IaC rules
   - spec-template.md: Already aligned with constitutional requirements
-  - tasks-template.md: Testing discipline aligns with Article XII
+  - tasks-template.md: Already aligned with testing requirements
 Follow-up TODOs: None
 -->
 
@@ -32,6 +32,8 @@ This repository governs the backend platform only. The system must support:
 This codebase is a shared backend monorepo containing multiple services and shared platform tooling.
 
 The backend runtime target is AWS Fargate. Every deployable backend service must be containerized and compatible with stateless container execution on AWS Fargate.
+Infrastructure and deployment resources MUST be managed as code.
+AWS CDK is the default Infrastructure as Code standard for provisioning and managing the platform's AWS resources.
 
 All specs, plans, and implementations MUST comply with this constitution.
 
@@ -279,6 +281,7 @@ All specs, plans, and implementations MUST comply with this constitution.
 5. Service runtime assumptions MUST be compatible with stateless container execution, horizontal scaling, and rolling deployment patterns.
 6. Background workers, consumers, and asynchronous processors SHOULD follow the same containerized deployment model unless an explicit exception is approved.
 7. Containerization is required for deployable services, but deployable service count MUST remain intentionally limited in early stages to avoid premature operational complexity.
+8. Infrastructure required for service deployment and platform operation MUST be defined and managed through Infrastructure as Code. AWS CDK is the default standard unless an explicit exception is approved.
 
 **Rationale**: The platform runtime target is AWS Fargate, but service count must be pragmatic rather than fragmented.
 
@@ -390,10 +393,11 @@ All specs, plans, and implementations MUST comply with this constitution.
 - each service owns its own data
 - every deployable service must be containerized and Fargate-compatible
 - service count should stay intentionally limited early on
+- Infrastructure as Code required, AWS CDK as default standard
 - Python plus FastAPI standard
 - unit tests mandatory
 - integration and contract tests required
 - family-level pooled billing entitlements
 - secure, auditable, observable by default
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-17 | **Last Amended**: 2026-03-17
+**Version**: 1.1.0 | **Ratified**: 2026-03-17 | **Last Amended**: 2026-03-17
