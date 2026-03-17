@@ -1,0 +1,77 @@
+# CodeRabbit Configuration for AdmissionZen AZEN_SERVICES
+# https://docs.coderabbit.ai
+
+# Language-specific settings
+language:
+  python:
+    # FastAPI-specific patterns
+    frameworks:
+      - fastapi
+    # Type hints are mandatory per constitution
+    type_hints: required
+    # Pydantic models validation
+    validate_models: true
+
+# Code quality standards
+review:
+  # Focus on constitutional compliance
+  checks:
+    - domain_separation: Service boundaries must not be violated
+    - event_driven: Cross-service communication must use events/messaging
+    - idempotency: Background jobs and webhooks must be idempotent
+    - type_hints: Public interfaces require type hints
+    - logging: Structured logging required for all services
+    - security: No hardcoded secrets, least-privilege access
+
+  # Testing requirements
+  testing:
+    - unit_tests: Required for all domain logic
+    - integration_tests: Required for API contracts, persistence, auth
+    - contract_tests: Required for inter-service APIs and event schemas
+
+  # Architecture patterns
+  patterns:
+    - layered_architecture: Transport, application, domain, infrastructure layers
+    - dto_separation: Domain models, API DTOs, and persistence models separate
+    - jwt_validation: Local Auth0 JWT validation (no centralized auth calls)
+
+# Ignored paths (build artifacts, cache, etc.)
+ignore:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - ".venv/**"
+  "venv/**"
+
+# Documentation requirements
+documentation:
+  require_docstrings: true
+  architecture_docs: true
+
+# Security checks
+security:
+  - no_hardcoded_secrets
+  - no_sql_injection
+  - proper_authorization
+  - audit_logging
+
+# AI review focus
+focus:
+  - domain_logic_correctness
+  - service_boundary_compliance
+  - event_schema_compatibility
+  - test_coverage
+  - observability (logging, metrics, traces)
+
+# PR-specific settings
+pr:
+  # Provide constitution context in reviews
+  context:
+    - "This is a multi-tenant microservices backend for university applications"
+    - "Services must be containerized for AWS Fargate"
+    - "Auth0 for auth, AdmissionZen services for authorization"
+    - "Event-driven integration using AWS EventBridge/SQS"
+    - "Search/Analytics must maintain own projections, not read other service DBs"
