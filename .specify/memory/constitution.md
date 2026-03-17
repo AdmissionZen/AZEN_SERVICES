@@ -1,12 +1,12 @@
 <!--
 SYNC IMPACT REPORT
 ------------------
-Version change: 1.0.0 -> 1.1.0
-Modified principles: Purpose, Article XIV
-Added sections: IaC mandate in Purpose and Article XIV
+Version change: 1.1.0 -> 1.2.0
+Modified principles: Purpose, Article II, Article VI, Article IX, Article XVI
+Added sections: IaC mandate (already in v1.1.0), idempotent writes, export governance, role-scoped access
 Removed sections: N/A
 Templates requiring updates:
-  - plan-template.md: Constitution Check section requires alignment with new IaC rules
+  - plan-template.md: Constitution Check section requires alignment with new idempotency and governance rules
   - spec-template.md: Already aligned with constitutional requirements
   - tasks-template.md: Already aligned with testing requirements
 Follow-up TODOs: None
@@ -27,7 +27,7 @@ This repository governs the backend platform only. The system must support:
 - student-scoped data isolation inside a shared family context
 - future payment and entitlement management
 - secure, observable, scalable service-to-service communication
-- cross-platform search, analytics, and derived datasets for internal product and marketing use
+- platform-wide search, analytics, and derived datasets for internal product and marketing use
 
 This codebase is a shared backend monorepo containing multiple services and shared platform tooling.
 
@@ -66,7 +66,7 @@ All specs, plans, and implementations MUST comply with this constitution.
    - Notifications
    - Billing and Entitlements
    - Audit and Compliance
-3. Bounded contexts may be combined into a smaller number of deployable services in early stages when this reduces operational complexity without violating ownership boundaries.
+3. Bounded contexts may be combined into a smaller number of deployable services in early stages when this reduces operational complexity, provided ownership boundaries remain explicit and future separation remains feasible.
 4. Each bounded context MUST define:
    - owned entities
    - owned API surface
@@ -132,6 +132,7 @@ All specs, plans, and implementations MUST comply with this constitution.
 5. Breaking API changes are prohibited without versioning and migration planning.
 6. Long synchronous dependency chains across services are prohibited.
 7. Synchronous calls should be reserved for request/response needs where immediate consistency is required.
+8. Write operations for externally retriable flows, including invitations, acceptance, linking, and webhook-triggered state changes, SHOULD support idempotent handling where practical.
 
 ---
 
@@ -196,6 +197,7 @@ All specs, plans, and implementations MUST comply with this constitution.
    - retention policy
    - access policy
 7. Search relevance, indexing strategy, and analytical models may evolve independently of source services, as long as ownership boundaries remain intact.
+8. Exportable datasets generated from Search and Analytics MUST follow approved access controls, audit requirements, and data-governance policies.
 
 **Rationale**: Search is both a product capability and a derived data capability, but it must remain projection-based rather than bypassing service boundaries.
 
@@ -321,6 +323,7 @@ All specs, plans, and implementations MUST comply with this constitution.
    - policy evolution
 10. Marketing, analytics, and dataset-generation capabilities MUST follow explicit access controls and data-governance rules.
 11. Sensitive student data MUST NOT be exposed for campaign or dataset use without an approved business purpose and policy basis.
+12. Internal access to analytics, segmentation, and dataset-generation capabilities MUST be role-scoped and auditable.
 
 ---
 
@@ -390,6 +393,7 @@ All specs, plans, and implementations MUST comply with this constitution.
 - event-driven integration using AWS-native messaging
 - Search and Analytics owns its own projection and index layer
 - search, key metrics, segmentation, and derived datasets must be projection-based
+- analytics access and exports must be role-scoped and auditable
 - each service owns its own data
 - every deployable service must be containerized and Fargate-compatible
 - service count should stay intentionally limited early on
@@ -400,4 +404,4 @@ All specs, plans, and implementations MUST comply with this constitution.
 - family-level pooled billing entitlements
 - secure, auditable, observable by default
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-17 | **Last Amended**: 2026-03-17
+**Version**: 1.2.0 | **Ratified**: 2026-03-17 | **Last Amended**: 2026-03-17
